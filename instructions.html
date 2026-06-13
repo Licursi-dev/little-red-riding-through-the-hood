@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Little Red Riding Through the Hood — Instructions</title>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+    :root{
+      --bg1:#070a1a;
+      --bg2:#2a0b3f;
+      --panel:#0b0f22cc;
+      --cyan:#2dfcff;
+      --text:#f6f3ff;
+      --muted:#b9b3d6;
+
+      --arcade:#FFD93B;
+      --arcadeShadow:#D62828;
+
+      --card: rgba(255,255,255,.05);
+      --line: rgba(255,255,255,.14);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:"Press Start 2P", system-ui, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 50% 20%, rgba(45,252,255,.14), transparent 60%),
+        radial-gradient(900px 500px at 30% 80%, rgba(255,43,214,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+    }
+
+    .bg-grid{
+      position:fixed; inset:0;
+      background-image:
+        linear-gradient(rgba(45,252,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,252,255,.07) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(circle at 50% 25%, rgba(0,0,0,.9), transparent 70%);
+      pointer-events:none;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 26px auto;
+      padding: 0 16px 40px;
+      position:relative;
+    }
+
+    .top{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    h1{
+      margin:0;
+      font-size: 24px;
+      letter-spacing: 1px;
+      color: var(--arcade);
+      text-shadow:
+        3px 3px 0 var(--arcadeShadow),
+        0 0 10px rgba(255,217,59,.18);
+    }
+
+    .sub{
+      font-size:10px;
+      color:var(--muted);
+      text-align:right;
+      line-height:1.55;
+    }
+
+    .panel{
+      position:relative;
+      background: var(--panel);
+      border: 2px solid rgba(45,252,255,.33);
+      border-radius: 18px;
+      box-shadow:
+        0 0 0 2px rgba(255,43,214,.10),
+        0 0 36px rgba(45,252,255,.14);
+      overflow:hidden;
+      padding: 18px;
+    }
+
+    .panel::before{
+      content:"";
+      position:absolute; inset:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.03),
+        rgba(255,255,255,.03) 1px,
+        rgba(0,0,0,0) 5px,
+        rgba(0,0,0,0) 10px
+      );
+      pointer-events:none;
+      mix-blend-mode: overlay;
+      opacity:.38;
+    }
+
+    .panel::after{
+      content:"";
+      position:absolute; inset:-20%;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(255,43,214,.08), transparent 55%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,.55), transparent 60%);
+      pointer-events:none;
+    }
+
+    .content{ position:relative; }
+
+    h2{
+      margin: 18px 0 10px;
+      font-size: 14px;
+      color: var(--arcade);
+      text-shadow: 2px 2px 0 var(--arcadeShadow);
+    }
+
+    p, li{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #f5f7ff;
+      margin: 0 0 12px;
+    }
+
+    .tag{
+      display:inline-block;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: rgba(246,243,255,.92);
+      font-size: 12px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 6px 6px 0 0;
+    }
+
+    .card{
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px;
+      margin: 10px 0 14px;
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      background: rgba(255,255,255,.08);
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.14);
+      font-size: 13px;
+    }
+
+    .warn{
+      border-left: 4px solid #ff2b2b;
+      background: rgba(255,43,43,.08);
+    }
+
+    .ok{
+      border-left: 4px solid #2dfcff;
+      background: rgba(45,252,255,.08);
+    }
+
+    .spoilers summary{
+      cursor:pointer;
+      user-select:none;
+      color: var(--arcade);
+      font-size: 14px;
+      margin: 6px 0;
+    }
+
+    .spoilers .card{
+      margin-top: 10px;
+    }
+
+    .btnrow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 14px;
+    }
+
+    a.btn{
+      display:inline-block;
+      text-decoration:none;
+      border: 1px solid rgba(255,217,59,.55);
+      color: rgba(255,217,59,.95);
+      background: rgba(10,10,20,.50);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      letter-spacing: .5px;
+    }
+
+    a.btn:hover{
+      box-shadow: 0 0 16px rgba(255,217,59,.14);
+      text-decoration:none;
+    }
+
+    .footer{
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 12px;
+    }
+
+    .stamp{
+      position:fixed;
+      right:18px;
+      bottom:14px;
+      font-size:10px;
+      color: rgba(255,217,59,.95);
+      padding:10px 12px;
+      border:1px solid rgba(255,217,59,.55);
+      border-radius:12px;
+      background:rgba(10,10,20,.50);
+      box-shadow: 0 0 16px rgba(255,217,59,.14);
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    a, a:visited { color: var(--cyan); }
+  </style>
+</head>
+
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="wrap">
+    <div class="top">
+      <h1>LITTLE RED — INSTRUCTIONS</h1>
+      <div class="sub">
+        Retro Prototype<br>
+        Built by <a href="https://licursi.dev" target="_blank" rel="noreferrer">licursi.dev</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="content">
+
+        <div class="btnrow" style="margin-top:0; margin-bottom:16px;">
+
+          <a class="btn" href="/">← Back to Game</a>
+        
+        </div>
+
+        <div class="card ok">
+          <h2>WELCOME TO THE STREETS</h2>
+          <p>
+            The year is 1993.  The streets of Los Angeles are divided between rival gangs and survival is a daily challenge. You’re <strong>Little Red</strong>, a high school kid just trying to make it through another day. 
+            Your goals are simple: avoid the rival gangs, stand up to the school bullies, and maybe catch the attention of your crush, Lisa Kapowski. But in these streets, even simple goals can be deadly...
+          </p>
+          <p>
+            This is a <strong>choice-based text adventure</strong>. Every scene gives you options.
+            Some choices are safer, some are risky, and some will cost you a life.
+          </p>
+        </div>
+
+        <h2>HOW TO PLAY (WEB PROTOTYPE)</h2>
+        <div class="card">
+          <p><strong>Click a choice</strong> to progress.</p>
+          <p>Or use the keyboard for faster testing:</p>
+
+          <span class="tag"><span class="kbd">1</span>–<span class="kbd">9</span> = choose option</span>
+          <span class="tag"><span class="kbd">R</span> = reset game</span>
+          <span class="tag">Reset button = reset game</span>
+
+          <p style="margin-top:12px;">
+            The top HUD shows your current <strong>Lives</strong>, <strong>Inventory count</strong>, and <strong>Location</strong> (useful for debugging and demos).
+          </p>
+        </div>
+
+        <h2>LIVES + RISK</h2>
+        <div class="card warn">
+          <p>
+            You start with <strong>3 lives</strong> (❤️❤️❤️).
+            Dangerous choices and failed challenges can reduce lives.
+          </p>
+          <p>
+            When lives hit <strong>0</strong>, it’s <strong>Game Over</strong>.
+          </p>
+          <p>
+            <strong>Tester tip:</strong> Try at least one “wrong” decision (e.g. a challenge fail) to confirm the life-loss system works.
+          </p>
+        </div>
+
+        <h2>WHAT TO EXPECT IN A PLAY SESSION</h2>
+        <div class="card">
+          <p>
+            The demo is designed like a prototype: quick scenes, clear outcomes, and a few branching paths.
+            You’ll usually move through:
+          </p>
+          <ul>
+            <li><strong>Home</strong> (prep for the day)</li>
+            <li><strong>Neighborhood</strong> (route decisions / danger)</li>
+            <li><strong>School</strong> (security / hallway / locker)</li>
+            <li><strong>Class</strong> (social choices)</li>
+            <li><strong>After school</strong> (final outcomes)</li>
+          </ul>
+        </div>
+
+        <h2>INVENTORY (SIMPLE PROTOTYPE RULE)</h2>
+        <div class="card">
+          <p>
+            Inventory matters for certain options later.
+            You don’t need to manage it manually — the game tracks items as you pick them up.
+          </p>
+          <p>
+            The HUD shows the <strong>count</strong> of items so testers can quickly confirm pick-ups happened.
+          </p>
+        </div>
+
+        <details class="spoilers">
+          <summary>SHOW SPOILERS (WALKTHROUGH)</summary>
+
+          <div class="card warn">
+            <p>
+              Spoiler warning: this section reveals a reliable “prototype path” for testing.
+              Use it if you want to confirm the full loop works end-to-end.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>QUICK TEST PATH</h2>
+            <ul>
+              <li>At home: pick up at least one useful item and leave.</li>
+              <li>In the neighborhood: take a route that can lead to an item or event.</li>
+              <li>At school: reach the hallway and visit the locker challenge.</li>
+              <li>Try one incorrect locker attempt to confirm a life can be lost.</li>
+              <li>Continue forward into class / after school to confirm the flow finishes.</li>
+            </ul>
+            <p>
+              (Exact text and options may change as the prototype evolves — the goal is to test the full loop.)
+            </p>
+          </div>
+        </details>
+
+        <div class="btnrow">
+          <a class="btn" href="/">← Back to Game</a>
+          <a class="btn" href="https://licursi.dev" target="_blank" rel="noreferrer">licursi.dev</a>
+        </div>
+
+        <div class="footer">
+
+          <div>Web build: FastAPI + HTML/CSS + keyboard shortcuts</div>
+        
+        </div>
+        
+        <div class="footer" style="border-top:none; padding-top:6px; margin-top:0;">
+        
+          <div>© 2026 licursi.dev — Little Red Prototype</div>
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="stamp">licursi.dev</div>
+</body>
+</html>
