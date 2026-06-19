@@ -15,19 +15,24 @@
       --cyan:#2dfcff;
       --text:#f6f3ff;
       --muted:#b9b3d6;
-
       --arcade:#FFD93B;
       --arcadeShadow:#D62828;
-
       --card: rgba(255,255,255,.05);
       --line: rgba(255,255,255,.14);
     }
 
     *{ box-sizing:border-box; }
 
+    html{
+      width:100%;
+      overflow-x:hidden;
+    }
+
     body{
       margin:0;
+      width:100%;
       min-height:100vh;
+      overflow-x:hidden;
       font-family:"Press Start 2P", system-ui, sans-serif;
       color:var(--text);
       background:
@@ -37,7 +42,8 @@
     }
 
     .bg-grid{
-      position:fixed; inset:0;
+      position:fixed;
+      inset:0;
       background-image:
         linear-gradient(rgba(45,252,255,.07) 1px, transparent 1px),
         linear-gradient(90deg, rgba(45,252,255,.07) 1px, transparent 1px);
@@ -47,9 +53,9 @@
     }
 
     .wrap{
-      max-width: 980px;
+      width:min(100% - 32px, 980px);
       margin: 26px auto;
-      padding: 0 16px 40px;
+      padding: 0 0 40px;
       position:relative;
     }
 
@@ -59,19 +65,25 @@
       justify-content:space-between;
       gap:12px;
       margin-bottom:14px;
+      min-width:0;
     }
 
     h1{
       margin:0;
-      font-size: 24px;
+      max-width:720px;
+      font-size: clamp(15px, 2.4vw, 24px);
+      line-height:1.45;
       letter-spacing: 1px;
       color: var(--arcade);
+      overflow-wrap:anywhere;
       text-shadow:
         3px 3px 0 var(--arcadeShadow),
         0 0 10px rgba(255,217,59,.18);
     }
 
     .sub{
+      flex:0 0 auto;
+      max-width:260px;
       font-size:10px;
       color:var(--muted);
       text-align:right;
@@ -92,7 +104,8 @@
 
     .panel::before{
       content:"";
-      position:absolute; inset:0;
+      position:absolute;
+      inset:0;
       background: repeating-linear-gradient(
         to bottom,
         rgba(255,255,255,.03),
@@ -107,19 +120,26 @@
 
     .panel::after{
       content:"";
-      position:absolute; inset:-20%;
+      position:absolute;
+      inset:-20%;
       background:
         radial-gradient(circle at 50% 35%, rgba(255,43,214,.08), transparent 55%),
         radial-gradient(circle at 50% 50%, rgba(0,0,0,.55), transparent 60%);
       pointer-events:none;
     }
 
-    .content{ position:relative; }
+    .content{
+      position:relative;
+      z-index:1;
+      min-width:0;
+    }
 
     h2{
       margin: 18px 0 10px;
       font-size: 14px;
+      line-height:1.5;
       color: var(--arcade);
+      overflow-wrap:anywhere;
       text-shadow: 2px 2px 0 var(--arcadeShadow);
     }
 
@@ -129,10 +149,16 @@
       line-height: 1.7;
       color: #f5f7ff;
       margin: 0 0 12px;
+      overflow-wrap:anywhere;
+    }
+
+    ul{
+      padding-left:22px;
     }
 
     .tag{
       display:inline-block;
+      max-width:100%;
       padding: 8px 10px;
       border-radius: 999px;
       border: 1px solid var(--line);
@@ -141,6 +167,7 @@
       font-size: 12px;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       margin: 6px 6px 0 0;
+      overflow-wrap:anywhere;
     }
 
     .card{
@@ -149,6 +176,7 @@
       border-radius: 14px;
       padding: 14px;
       margin: 10px 0 14px;
+      min-width:0;
     }
 
     .kbd{
@@ -175,7 +203,9 @@
       user-select:none;
       color: var(--arcade);
       font-size: 14px;
+      line-height:1.5;
       margin: 6px 0;
+      overflow-wrap:anywhere;
     }
 
     .spoilers .card{
@@ -198,7 +228,9 @@
       padding: 10px 12px;
       border-radius: 12px;
       font-size: 12px;
+      line-height:1.4;
       letter-spacing: .5px;
+      overflow-wrap:anywhere;
     }
 
     a.btn:hover{
@@ -210,6 +242,7 @@
       margin-top: 14px;
       color: var(--muted);
       font-size: 12px;
+      line-height:1.5;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       display:flex;
       justify-content:space-between;
@@ -217,12 +250,14 @@
       flex-wrap:wrap;
       border-top: 1px solid rgba(255,255,255,.10);
       padding-top: 12px;
+      overflow-wrap:anywhere;
     }
 
     .stamp{
       position:fixed;
       right:18px;
       bottom:14px;
+      z-index:20;
       font-size:10px;
       color: rgba(255,217,59,.95);
       padding:10px 12px;
@@ -232,9 +267,184 @@
       box-shadow: 0 0 16px rgba(255,217,59,.14);
       text-transform:uppercase;
       letter-spacing:1px;
+      pointer-events:none;
     }
 
     a, a:visited { color: var(--cyan); }
+
+    @media (max-width: 900px){
+      .wrap{
+        width:min(100% - 28px, 860px);
+        margin:20px auto;
+      }
+
+      h1{
+        font-size: clamp(14px, 2.6vw, 20px);
+        text-shadow:
+          2px 2px 0 var(--arcadeShadow),
+          0 0 10px rgba(255,217,59,.16);
+      }
+
+      .sub{
+        font-size:9px;
+        max-width:230px;
+      }
+
+      .panel{
+        padding:16px;
+      }
+
+      p, li{
+        font-size:15px;
+      }
+    }
+
+    @media (max-width: 700px){
+      .wrap{
+        width:min(100% - 24px, 620px);
+        margin:14px auto;
+        padding-bottom:24px;
+      }
+
+      .top{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+        gap:12px;
+      }
+
+      h1{
+        max-width:100%;
+        font-size: clamp(12px, 4.4vw, 16px);
+        line-height:1.55;
+        text-align:center;
+      }
+
+      .sub{
+        width:100%;
+        max-width:360px;
+        text-align:center;
+        font-size:9px;
+      }
+
+      .panel{
+        padding:14px;
+        border-radius:14px;
+      }
+
+      h2{
+        font-size:12px;
+      }
+
+      p, li{
+        font-size:15px;
+        line-height:1.65;
+      }
+
+      ul{
+        padding-left:18px;
+      }
+
+      .btnrow{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      a.btn{
+        width:100%;
+        text-align:center;
+        font-size:10px;
+      }
+
+      .tag{
+        width:100%;
+        text-align:center;
+        font-size:11px;
+        border-radius:12px;
+      }
+
+      .footer{
+        flex-direction:column;
+        text-align:center;
+        font-size:11px;
+      }
+
+      .stamp{
+        position:static;
+        display:block;
+        width:max-content;
+        max-width:calc(100% - 24px);
+        margin:8px auto 18px;
+        padding:7px 9px;
+        font-size:8px;
+        text-align:center;
+      }
+    }
+
+    @media (max-width: 420px){
+      .wrap{
+        width:min(100% - 18px, 390px);
+        margin:10px auto;
+      }
+
+      .bg-grid{
+        background-size:38px 38px;
+      }
+
+      h1{
+        font-size: clamp(11px, 5vw, 14px);
+        line-height:1.6;
+      }
+
+      .sub{
+        font-size:8px;
+      }
+
+      .panel{
+        padding:12px;
+        border-radius:12px;
+      }
+
+      .card{
+        padding:12px;
+      }
+
+      h2{
+        font-size:10px;
+      }
+
+      p, li{
+        font-size:14px;
+      }
+
+      .tag{
+        font-size:10px;
+        padding:7px 8px;
+      }
+
+      .kbd{
+        font-size:11px;
+      }
+
+      a.btn{
+        font-size:9px;
+        padding:9px 10px;
+      }
+
+      .spoilers summary{
+        font-size:10px;
+      }
+
+      .footer{
+        font-size:10px;
+      }
+    }
+
+    @media (max-width: 330px){
+      .stamp{
+        display:none;
+      }
+    }
   </style>
 </head>
 
@@ -254,15 +464,13 @@
       <div class="content">
 
         <div class="btnrow" style="margin-top:0; margin-bottom:16px;">
-
           <a class="btn" href="/">← Back to Game</a>
-        
         </div>
 
         <div class="card ok">
           <h2>WELCOME TO THE STREETS</h2>
           <p>
-            The year is 1993.  The streets of Los Angeles are divided between rival gangs and survival is a daily challenge. You’re <strong>Little Red</strong>, a high school kid just trying to make it through another day. 
+            The year is 1993.  The streets of Los Angeles are divided between rival gangs and survival is a daily challenge. You’re <strong>Little Red</strong>, a high school kid just trying to make it through another day.
             Your goals are simple: avoid the rival gangs, stand up to the school bullies, and maybe catch the attention of your crush, Lisa Kapowski. But in these streets, even simple goals can be deadly...
           </p>
           <p>
@@ -356,15 +564,8 @@
         </div>
 
         <div class="footer">
-
-          <div>Web build: FastAPI + HTML/CSS + keyboard shortcuts</div>
-        
-        </div>
-        
-        <div class="footer" style="border-top:none; padding-top:6px; margin-top:0;">
-        
           <div>© 2026 licursi.dev — Little Red Prototype</div>
-        
+          <div>Web build: FastAPI + HTML/CSS + keyboard shortcuts</div>
         </div>
 
       </div>
